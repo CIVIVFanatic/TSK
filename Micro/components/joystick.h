@@ -46,18 +46,20 @@ void Joystick::micro_thread_run(){
 	COMPONENT_THREAD_SETUP;
 	
 	while(1){
+		Analog prevX = xVal;
 		xVal = xPin.analogRead();
+		Analog prevY = yVal;
 		yVal = yPin.analogRead();
-		if(xVal.percent()>80){
+		if((xVal.percent()>80)&&(prevX.percent()<80)){
 			broadcast(RIGHT);
 		}
-		if(xVal.percent()<20){
+		if((xVal.percent()<20)&&(prevX.percent()>20)){
 			broadcast(LEFT);
 		}
-		if(yVal.percent()>80){
+		if((yVal.percent()>80)&&(prevY.percent()<80)){
 			broadcast(UP);
 		}
-		if(yVal.percent()>80){
+		if((yVal.percent()<20)&&(prevY.percent()>20)){
 			broadcast(DOWN);
 		}
         delay(msDelay);
