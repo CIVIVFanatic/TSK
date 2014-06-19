@@ -15,6 +15,8 @@ public:
 	MICRO_Event MOVED;
 	LinPot(AdcPin p);
 	float readSlider();
+	float readStep(int steps);
+	float readStep(int steps, int min, int max);
 	
 	void micro_thread_run();
 	void start();
@@ -57,6 +59,14 @@ void LinPot::micro_thread_run(){
 
 float LinPot::readSlider(){
 	return currslideVal.percent();
+}
+
+float LinPot::readStep(int steps){
+	return map(currslideVal.percent(),0,100,1,steps+1);
+}
+
+float LinPot::readStep(int steps, int min, int max){
+	return map(currslideVal.percent(),min,max,1,steps+1);
 }
 
 

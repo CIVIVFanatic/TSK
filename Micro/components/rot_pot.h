@@ -17,6 +17,8 @@ public:
 	MICRO_Event TURNED_COUNTERCLOCKWISE;
 	RotPot(AdcPin p);
 	float readKnob();
+	float readStep(int step);
+	float readStep(int step, int min, int max);
 	
 	void micro_thread_run();
 	void start();
@@ -68,6 +70,12 @@ float RotPot::readKnob(){
 	return currknobVal.percent();
 }
 
+float RotPot::readStep(int steps){
+	return map(currknobVal.percent(),0,100,1,steps+1);
+}
+
+float RotPot::readStep(int steps, int min, int max){
+	return map(currknobVal.percent(),min,max,1,steps+1);
 
 /* 
  #define RotPot_Scope(instance) namespace MICRO_APPEND_ITEMS(instance,_NAMESPACE){\
