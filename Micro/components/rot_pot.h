@@ -76,6 +76,7 @@ float RotPot::readStep(int steps){
 
 float RotPot::readStep(int steps, int min, int max){
 	return map(currknobVal.percent(),min,max,1,steps+1);
+}
 
 /* 
  #define RotPot_Scope(instance) namespace MICRO_APPEND_ITEMS(instance,_NAMESPACE){\

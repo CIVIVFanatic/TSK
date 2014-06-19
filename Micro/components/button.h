@@ -21,26 +21,23 @@
     class  Button: MICRO_Thread {
         public: 
           MICRO_Event PRESSED;
-		  Button(GpioPin p);
+	  MICRO_Event RELEASED;
+	  MICRO_Event HELD;
           Button(GpioPin p, int pUp);
           bool pressed();
+	  bool down();
           void micro_thread_run();
           void start();
           
          private:
-		   bool pullUp;
+	   bool pullUp;
            bool eventPressed;
-		   bool pollPressed;
+	   bool pollPressed;
            GpioPin pin;
+	   bool isDown;
+	   uint8_t heldCount; 
     };
     
-	Button::Button(GpioPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p){
-         pin.setMode(INPUT);
-		 pullUp = true;
-		 pin.setPullup(HIGH);
-         start();
-    }
-
     Button::Button(GpioPin p, int pUp):MICRO_Thread(MICRO_NEVER_EVENT),pin(p){
          pin.setMode(INPUT);
 		 switch (pUp){
@@ -62,12 +59,16 @@
     
     bool Button::pressed(){
       if(eventPressed && ! pollPressed){
-		  pollPressed = true;
-         return true;
+	pollPressed = true;
+        return true;
       }
      else{
          return false; 
      }
+    }
+    
+    bool Button::down(){
+       return isDown;
     }
     void Button::start(){
        triggerEvent();
@@ -78,20 +79,27 @@
       // component makers have this small burden 
       COMPONENT_THREAD_SETUP;
       eventPressed = false;
-      bool isDown;
 
       while(1){
-		isDown = pullUp? (!pin.digitalRead()) : pin.digitalRead();
+	isDown = pullUp? (!pin.digitalRead()) : pin.digitalRead();
         if(isDown){
             if(!eventPressed){                
                 broadcast(PRESSED);
                 eventPressed = true;
-            }
+            }else{
+		heldCount++;
+	    }
         }else{
+	  heldCount = 0;
+	  if(eventPressed){
+	    broadcast(RELEASED);
+          }
           eventPressed = false;
-		  pollPressed = false;
+	  pollPressed = false;
         }
-       
+       if(heldCount == 5){
+	 broadcast(HELD);
+       }
        delay(100);
       }
     }
