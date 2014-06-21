@@ -6,24 +6,24 @@
 class Speaker{
     public:
 	//Speaker(GpioPwmPin p):pin(p){};
-	Speaker(int p):pin(p){};
+	Speaker(GpioPwmPin p):pin(p){};
 	void playNote(int note);
 	void playNote(int note, int duration);
 	void stop();
 	//playMelody();
     private:
         //GpioPwmPin pin;
-	int pin;
+	GpioPwmPin pin;
 };
 
 void Speaker::playNote(int note){
-    tone(pin,note);
+    tone(pin.getPin(),note);
 }
 
 void Speaker::playNote(int note, int duration){
-    tone(pin,note,duration);
+    tone(pin.getPin(),note,duration);
 }
 
 void Speaker::stop(){
-    noTone(pin);
+    noTone(pin.getPin());
 }

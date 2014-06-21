@@ -21,23 +21,29 @@
     class  Button: MICRO_Thread {
         public: 
           MICRO_Event PRESSED;
-	  MICRO_Event RELEASED;
-	  MICRO_Event HELD;
+	      MICRO_Event RELEASED;
+	      MICRO_Event HELD;
+	      Button(GpioPin p);
           Button(GpioPin p, int pUp);
           bool pressed();
-	  bool down();
+	      bool down();
           void micro_thread_run();
           void start();
           
-         private:
-	   bool pullUp;
-           bool eventPressed;
-	   bool pollPressed;
-           GpioPin pin;
-	   bool isDown;
-	   uint8_t heldCount; 
+        private:
+		  bool pullUp;
+		  bool eventPressed;
+	      bool pollPressed;
+		  bool isDown;
+          GpioPin pin;
+	      uint8_t heldCount; 
     };
     
+	Button::Button(GpioPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),pullUp(false){
+         pin.setMode(INPUT);
+         start();
+    }
+
     Button::Button(GpioPin p, int pUp):MICRO_Thread(MICRO_NEVER_EVENT),pin(p){
          pin.setMode(INPUT);
 		 switch (pUp){

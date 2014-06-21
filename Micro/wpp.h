@@ -69,8 +69,6 @@
 	#define PIN20_SETUP 20
 	typedef AdcGpioPin PIN20_TYPE;
 
-
-
 	#define usePinAs(p,n) MICRO_PIN_TYPE_FROM_PIN(p) n  =  MICRO_PIN_TYPE_FROM_PIN(p)(MICRO_PIN_SETUP_FROM_PIN(p))
 	#define usePin(p) MICRO_PIN_TYPE_FROM_PIN(p) p  =  MICRO_PIN_TYPE_FROM_PIN(p)(MICRO_PIN_SETUP_FROM_PIN(p))
 	#define useAllPins() usePin(PIN8);usePin(PIN9);usePin(PIN10);usePin(PIN11);usePin(PIN12);usePin(PIN13);usePin(PIN14);usePin(PIN15);usePin(PIN16);usePin(PIN17);usePin(PIN18);usePin(PIN19);usePin(PIN20);

@@ -1,5 +1,7 @@
 #include <wpp.h>
 #include <micro_threads.h>
+#include <tk_pins.h>
+#include <pitches.h>
 
 
 

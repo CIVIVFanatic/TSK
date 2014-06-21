@@ -10,12 +10,12 @@
 
 
 
-class  RotPot: MICRO_Thread {
+class  Knob: MICRO_Thread {
 public: 
 	MICRO_Event TURNED;
 	MICRO_Event TURNED_CLOCKWISE;
 	MICRO_Event TURNED_COUNTERCLOCKWISE;
-	RotPot(AdcPin p);
+	Knob(AdcPin p);
 	float readKnob();
 	float readStep(int step);
 	float readStep(int step, int min, int max);
@@ -31,15 +31,15 @@ private:
 	Analog currknobVal;  
 };
 
-RotPot::RotPot(AdcPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),msDelay(200),changeThreshold(5),currknobVal(0),clockwiseUp(false){
+Knob::Knob(AdcPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),msDelay(200),changeThreshold(5),currknobVal(0),clockwiseUp(false){
 	start();
 }
 
-void RotPot::start(){
+void Knob::start(){
 	triggerEvent();
 }
 
-void RotPot::micro_thread_run(){
+void Knob::micro_thread_run(){
 	//this line is required when using "true" 
 	// cooperative threading syntax. We're ok if
 	// component makers have this small burden 
@@ -66,20 +66,20 @@ void RotPot::micro_thread_run(){
 	
 }
 
-float RotPot::readKnob(){
+float Knob::readKnob(){
 	return currknobVal.percent();
 }
 
-float RotPot::readStep(int steps){
+float Knob::readStep(int steps){
 	return map(currknobVal.percent(),0,100,1,steps+1);
 }
 
-float RotPot::readStep(int steps, int min, int max){
+float Knob::readStep(int steps, int min, int max){
 	return map(currknobVal.percent(),min,max,1,steps+1);
 }
 
 /* 
- #define RotPot_Scope(instance) namespace MICRO_APPEND_ITEMS(instance,_NAMESPACE){\
+ #define Knob_Scope(instance) namespace MICRO_APPEND_ITEMS(instance,_NAMESPACE){\
  bool pressed(){return instance.pressed();}\
  }
  

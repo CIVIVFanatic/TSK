@@ -10,10 +10,10 @@
 
 
 
-class  LinPot: MICRO_Thread {
+class  Slider: MICRO_Thread {
 public: 
 	MICRO_Event MOVED;
-	LinPot(AdcPin p);
+	Slider(AdcPin p);
 	float readSlider();
 	float readStep(int steps);
 	float readStep(int steps, int min, int max);
@@ -28,15 +28,15 @@ private:
 	Analog currslideVal;  
 };
 
-LinPot::LinPot(AdcPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),msDelay(200),changeThreshold(5),currslideVal(0){
+Slider::Slider(AdcPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),msDelay(200),changeThreshold(5),currslideVal(0){
 	start();
 }
 
-void LinPot::start(){
+void Slider::start(){
 	triggerEvent();
 }
 
-void LinPot::micro_thread_run(){
+void Slider::micro_thread_run(){
 	//this line is required when using "true" 
 	// cooperative threading syntax. We're ok if
 	// component makers have this small burden 
@@ -57,21 +57,21 @@ void LinPot::micro_thread_run(){
 	
 }
 
-float LinPot::readSlider(){
+float Slider::readSlider(){
 	return currslideVal.percent();
 }
 
-float LinPot::readStep(int steps){
+float Slider::readStep(int steps){
 	return map(currslideVal.percent(),0,100,1,steps+1);
 }
 
-float LinPot::readStep(int steps, int min, int max){
+float Slider::readStep(int steps, int min, int max){
 	return map(currslideVal.percent(),min,max,1,steps+1);
 }
 
 
 /* 
- #define LinPot_Scope(instance) namespace MICRO_APPEND_ITEMS(instance,_NAMESPACE){\
+ #define Slider_Scope(instance) namespace MICRO_APPEND_ITEMS(instance,_NAMESPACE){\
  bool pressed(){return instance.pressed();}\
  }
  

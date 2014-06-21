@@ -1,5 +1,8 @@
 //author: Ed Baafi
 //(c)2014 Modkit LLC
+//modified by Robert Hayes
+//2014 TechSmartKids
+
 #ifndef WPP_PINS
 #define WPP_PINS
 
@@ -43,6 +46,10 @@ inline uint16_t _analogRead(uint8_t pin){
 	return analogRead(pin);	
 }
 
+inline uint8_t _getPin(uint8_t pin){
+	return pin;
+}
+
 template <class pinClass>
 class wpp_digital_io_pin{
   public:
@@ -61,6 +68,9 @@ class wpp_digital_io_pin{
 	  }
 	  uint8_t digitalRead(){
 		return _digitalRead(digital_pin_num); 
+	  }
+	  uint8_t getPin(){
+		return _getPin(digital_pin_num);
 	  }
 	
 	
@@ -163,6 +173,7 @@ class AdcGpioPin: public AdcPin,public GpioPin, public wpp_analog_in_pin<AdcGpio
       using wpp_digital_io_pin<AdcGpioPin>::digitalWrite;
 	  using wpp_digital_io_pin<AdcGpioPin>::digitalRead;
       using wpp_digital_io_pin<AdcGpioPin>::setMode;
+	  using wpp_digital_io_pin<AdcGpioPin>::getPin;
 };
 class GpioPwmPin: public GpioPin,public PwmPin, public wpp_digital_io_pin<GpioPwmPin>,public wpp_pwm_pin<GpioPwmPin>{
   
@@ -175,6 +186,7 @@ class GpioPwmPin: public GpioPin,public PwmPin, public wpp_digital_io_pin<GpioPw
       using wpp_digital_io_pin<GpioPwmPin>::digitalWrite;
 	  using wpp_digital_io_pin<GpioPwmPin>::digitalRead;
       using wpp_digital_io_pin<GpioPwmPin>::setMode;
+	  using wpp_digital_io_pin<GpioPwmPin>::getPin;
 };
 
 
