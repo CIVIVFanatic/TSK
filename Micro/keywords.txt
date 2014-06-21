@@ -1,0 +1,108 @@
+#***********************************#
+##KEYWORDS FOR MICRO IMPLEMENTATION##
+#...................................#
+when	KEYWORD2
+thread	KEYWORD2
+events	KEYWORD3
+threads	KEYWORD3
+START	LITERAL1
+
+#*******************************#
+##KEYWORDS FOR TINKERKIT PINOUT##
+#...............................#
+O0	LITERAL1
+O1	LITERAL1
+O2	LITERAL1
+O3	LITERAL1
+O4	LITERAL1
+O5	LITERAL1
+I0	LITERAL1
+I1	LITERAL1
+I2	LITERAL1
+I3	LITERAL1
+I4	LITERAL1
+I5	LITERAL1
+
+#************#
+##Components##
+#............#
+Accelerometer	KEYWORD1
+Button	KEYWORD1
+Joystick	KEYWORD1
+Knob	KEYWORD1
+LED	KEYWORD1
+LightSensor	KEYWORD1
+Slider	KEYWORD1
+Speaker	KEYWORD1
+
+#*********#
+##Methods##
+#.........#
+
+##Accelerometer##
+readX	KEYWORD2
+readY	KEYWORD2
+readZ	KEYWORD2
+
+##Button##
+pressed	KEYWORD2
+down	KEYWORD2
+
+##Joystick##
+##readX and readY already highlighted##
+
+##Knob##
+readKnob	KEYWORD2
+readStep	KEYWORD2
+
+##LED##
+on	KEYWORD2
+off	KEYWORD2
+setBrightness	KEYWORD2
+getBrightness	KEYWORD2
+state	KEYWORD2
+
+##LightSensor##
+readLight	KEYWORD2
+
+##Slider##
+readSlider	KEYWORD2
+
+##Speaker##
+playNote	KEYWORD2
+stop	KEYWORD2
+
+#********#
+##Events##
+#........#
+
+##Accelerometer##
+SHAKENX	KEYWORD2
+SHAKENY	KEYWORD2
+SHAKENZ	KEYWORD2
+
+##Button##
+PRESSED	KEYWORD2
+RELEASED	KEYWORD2
+HELD	KEYWORD2
+
+##Joystick##
+UP	KEYWORD2
+DOWN	KEYWORD2
+LEFT	KEYWORD2
+RIGHT	KEYWORD2
+
+##Knob##
+TURNED	KEYWORD2
+TURNED_CLOCKWISE	KEYWORD2
+TURNED_COUNTERCLOCKWISE	KEYWORD2
+
+##LightSensor##
+LIGHT	KEYWORD2
+DARK	KEYWORD2
+BRIGHTER	KEYWORD2
+DARKER	KEYWORD2
+CHANGED	KEYWORD2
+
+##Slider##
+MOVED	KEYWORD2
