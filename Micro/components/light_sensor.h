@@ -14,7 +14,7 @@ class  LightSensor: MICRO_Thread {
 public: 
 	MICRO_Event LIGHT;
 	MICRO_Event DARK;
-	MICRO_Event BRIGHTER;
+	MICRO_Event LIGHTER;
 	MICRO_Event DARKER;
 	MICRO_Event CHANGED;
 
@@ -63,7 +63,7 @@ void LightSensor::micro_thread_run(){
 		if(abs(currlightVal.percent() - prevlightVal.percent())>changeThreshold){
 			broadcast(CHANGED);
 			if(currlightVal.percent() > prevlightVal.percent()){
-				broadcast(BRIGHTER);
+				broadcast(LIGHTER);
 			}else{
 				broadcast(DARKER);
 			}

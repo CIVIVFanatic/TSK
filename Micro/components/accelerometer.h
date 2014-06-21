@@ -1,9 +1,12 @@
-//authors: Ed Baafi, Robert Hayes
+//Accelerometer class written by:
+//Robert Hayes
+//2014 TechSmartKids LLC
+
+//Micro and wpp framework provided by:
+//Ed Baafi
 //(c)2013 Modkit LLC
-//#include <wpp.h>
+
 #include <micro_component.h>
-//#include "wpp_pins.h"
-//#include "micro_threads.h"
 //***************************************************************************************/                                                                                     */
 //*     Modkit Micro Framework - Light Sensor                                                           */                                                                                     */
 //***************************************************************************************/
@@ -15,6 +18,10 @@ public:
 	MICRO_Event SHAKENX;
 	MICRO_Event SHAKENY;
 	MICRO_Event SHAKENZ;
+	MICRO_Event JERKX;
+	MICRO_Event JERKY;
+	MICRO_Event JERKZ;
+
 	Accelerometer(AdcPin px, AdcPin py);
 	Accelerometer(AdcPin px, AdcPin py, AdcPin pz);
 	float readX();
@@ -31,7 +38,7 @@ private:
 	const uint8_t msDelay;
 	const float noG;
 	const float oneG;
-	const float shakeThreshold;
+	const float jerkThreshold;
 	const uint8_t numVal;
 	const boolean usingZ;
 	int currentLoc;
@@ -44,11 +51,11 @@ private:
 	Analog zVal[6];*/
 };
 
-Accelerometer::Accelerometer(AdcPin px, AdcPin py):MICRO_Thread(MICRO_NEVER_EVENT),pinX(px),pinY(py),pinZ(PIN20),msDelay(33),noG(48),oneG(10),shakeThreshold(25),numVal(6),usingZ(false),currentLoc(0){
+Accelerometer::Accelerometer(AdcPin px, AdcPin py):MICRO_Thread(MICRO_NEVER_EVENT),pinX(px),pinY(py),pinZ(PIN20),msDelay(33),noG(48),oneG(10),jerkThreshold(25),numVal(6),usingZ(false),currentLoc(0){
 	start();
 }
 
-Accelerometer::Accelerometer(AdcPin px, AdcPin py, AdcPin pz):MICRO_Thread(MICRO_NEVER_EVENT),pinX(px),pinY(py),pinZ(pz),msDelay(33),noG(48),oneG(10),shakeThreshold(25),numVal(6),usingZ(true),currentLoc(0){
+Accelerometer::Accelerometer(AdcPin px, AdcPin py, AdcPin pz):MICRO_Thread(MICRO_NEVER_EVENT),pinX(px),pinY(py),pinZ(pz),msDelay(33),noG(48),oneG(10),jerkThreshold(25),numVal(6),usingZ(true),currentLoc(0){
 	start();
 }
 
@@ -73,48 +80,51 @@ void Accelerometer::micro_thread_run(){
 			zVal[currentLoc] = temp.percent();
 		}
 
-		if(abs(xVal[currentLoc]-noG)>shakeThreshold){ //this condition could be much better
+		if(abs(xVal[currentLoc]-noG)>jerkThreshold){ //this condition could be much better
+			broadcast(JERKX);
 			uint8_t hi = 0;
 			uint8_t lo = 0;
 			for(uint8_t i = 0;i<numVal; i++){
-				if((xVal[i]-noG)>shakeThreshold){
+				if((xVal[i]-noG)>jerkThreshold){
 					hi++;
-				}else if((noG-xVal[i])>shakeThreshold){
+				}else if((noG-xVal[i])>jerkThreshold){
 					lo++;
 				}
 			}
-			if((hi>0)&&(lo>0)){
+			if((hi>0)&&(lo>0)&&((hi+lo)>2)){
 				broadcast(SHAKENX);
 			}
 		}
 
-		if(abs(yVal[currentLoc]-noG)>shakeThreshold){ //this condition could be much better
+		if(abs(yVal[currentLoc]-noG)>jerkThreshold){ //this condition could be much better
+			broadcast(JERKY);
 			uint8_t hi = 0;
 			uint8_t lo = 0;
 			for(uint8_t i = 0;i<numVal; i++){
-				if((yVal[i]-noG)>shakeThreshold){
+				if((yVal[i]-noG)>jerkThreshold){
 					hi++;
-				}else if((noG-yVal[i])>shakeThreshold){
+				}else if((noG-yVal[i])>jerkThreshold){
 					lo++;
 				}
 			}
-			if((hi>0)&&(lo>0)){
+			if((hi>0)&&(lo>0)&&((hi+lo)>2)){
 				broadcast(SHAKENY);
 			}
 		}
 
 		if(usingZ){
-			if(abs(zVal[currentLoc]-noG)>shakeThreshold){ //this condition could be much better
+			if(abs(zVal[currentLoc]-noG)>jerkThreshold){ //this condition could be much better
+				broadcast(JERKZ);
 				uint8_t hi = 0;
 				uint8_t lo = 0;
 				for(uint8_t i = 0;i<numVal; i++){
-					if((zVal[i]-noG)>shakeThreshold){
+					if((zVal[i]-noG)>jerkThreshold){
 						hi++;
-					}else if((noG-zVal[i])>shakeThreshold){
+					}else if((noG-zVal[i])>jerkThreshold){
 						lo++;
 					}
 				}
-				if((hi>0)&&(lo>0)){
+				if((hi>0)&&(lo>0)&&((hi+lo)>2)){
 					broadcast(SHAKENZ);
 				}
 			}
@@ -144,8 +154,3 @@ float Accelerometer::readZ(){
  }
  
  */
-
-
-//**********************************************************************/
-//*  END COMPONENT EXAMPLES                                            */
-//**********************************************************************/

@@ -20,31 +20,33 @@
 
     class  Button: MICRO_Thread {
         public: 
-          MICRO_Event PRESSED;
+              MICRO_Event PRESSED;
 	      MICRO_Event RELEASED;
 	      MICRO_Event HELD;
 	      Button(GpioPin p);
-          Button(GpioPin p, int pUp);
-          bool pressed();
+              Button(GpioPin p, int pUp);
+              bool pressed();
 	      bool down();
-          void micro_thread_run();
-          void start();
+	      bool readSwitch();
+              void micro_thread_run();
+              void start();
           
         private:
-		  bool pullUp;
-		  bool eventPressed;
+	      bool pullUp;
+	      bool eventPressed;
 	      bool pollPressed;
-		  bool isDown;
-          GpioPin pin;
+	      bool isDown;
+              bool switchVal;
+              GpioPin pin;
 	      uint8_t heldCount; 
     };
     
-	Button::Button(GpioPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),pullUp(false){
+	Button::Button(GpioPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),pullUp(false),switchVal(false){
          pin.setMode(INPUT);
          start();
     }
 
-    Button::Button(GpioPin p, int pUp):MICRO_Thread(MICRO_NEVER_EVENT),pin(p){
+    Button::Button(GpioPin p, int pUp):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),switchVal(false){
          pin.setMode(INPUT);
 		 switch (pUp){
 		 case 0:
@@ -76,6 +78,9 @@
     bool Button::down(){
        return isDown;
     }
+    bool Button::readSwitch(){
+       return switchVal;
+    }
     void Button::start(){
        triggerEvent();
     }
@@ -91,6 +96,7 @@
         if(isDown){
             if(!eventPressed){                
                 broadcast(PRESSED);
+		switchVal != switchVal;
                 eventPressed = true;
             }else{
 		heldCount++;
