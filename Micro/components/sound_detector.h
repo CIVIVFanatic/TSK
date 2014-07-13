@@ -10,22 +10,20 @@
 
  class SoundDetector:MICRO_Thread{
 	public:
-	MICRO_Event LOUD;
-	MICRO_Event QUIET;
-	MICRO_Event NOISY;
-	SoundDetector(GpioPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),msDelay(20),isOn(false),wasOn(false),heldCount(0){pin.setMode(INPUT); start();};
-	bool listen();
-	
-	void micro_thread_run();
-	void start();
+		MICRO_Event LOUD;
+		MICRO_Event QUIET;
+		MICRO_Event NOISY;
+		SoundDetector(GpioPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),msDelay(20),isOn(false),wasOn(false),heldCount(0){pin.setMode(INPUT); start();};
+		bool listen();
+		void micro_thread_run();
+		void start();
 	
 	private:        
-	GpioPin pin;
-	const uint8_t msDelay;
-	bool isOn;
-	bool wasOn;
-	uint8_t heldCount;
-
+		GpioPin pin;
+		const uint8_t msDelay;
+		bool isOn;
+		bool wasOn;
+		uint8_t heldCount;
  };
 
 void SoundDetector::start(){

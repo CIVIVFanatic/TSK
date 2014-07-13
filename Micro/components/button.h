@@ -1,52 +1,37 @@
-//author: Ed Baafi
-//(c)2013 Modkit LLC
-//#include <wpp.h>
+//authors: Ed Baafi, Robert Hayes
+//(c)2013 Modkit LLC, 2014 TechSmartKids LLC
+//Button Class Code
+
+#ifndef BUTTON_H
+#define BUTTON_H
+
 #include <micro_component.h>
-//#include "wpp_pins.h"
-//#include "micro_threads.h"
-//***************************************************************************************/                                                                                     */
-//*     Wiring++ Threaded Component Example                                             */                                                                                     */
-//***************************************************************************************/
-
-
-//TODO Clean this up (main question is should inheritance from MICRO_Thread require 
-// redeclaration of start and run? )
-//
-// but this is a working example of how an event based component will work.
-
-
- 
-//EXAMPLE THREAD ENABLED LIBRARY
 
     class  Button: MICRO_Thread {
         public: 
-              MICRO_Event PRESSED;
+          MICRO_Event PRESSED;
 	      MICRO_Event RELEASED;
 	      MICRO_Event HELD;
 	      Button(GpioPin p);
-              Button(GpioPin p, int pUp);
-              bool pressed();
+          Button(GpioPin p, int pUp);
 	      bool down();
-	      bool readSwitch();
-              void micro_thread_run();
-              void start();
+          void micro_thread_run();
+          void start();
           
         private:
-	      bool pullUp;
-	      bool eventPressed;
-	      bool pollPressed;
-	      bool isDown;
-              bool switchVal;
-              GpioPin pin;
+		  bool pullUp;
+		  bool eventPressed;
+		  bool isDown;
+          GpioPin pin;
 	      uint8_t heldCount; 
     };
     
-	Button::Button(GpioPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),pullUp(false),switchVal(false){
+	Button::Button(GpioPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),pullUp(false),eventPressed(false),heldCount(0){
          pin.setMode(INPUT);
          start();
     }
 
-    Button::Button(GpioPin p, int pUp):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),switchVal(false){
+    Button::Button(GpioPin p, int pUp):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),eventPressed(false),heldCount(0){
          pin.setMode(INPUT);
 		 switch (pUp){
 		 case 0:
@@ -65,21 +50,8 @@
          start();
     }
     
-    bool Button::pressed(){
-      if(eventPressed && ! pollPressed){
-	pollPressed = true;
-        return true;
-      }
-     else{
-         return false; 
-     }
-    }
-    
     bool Button::down(){
        return isDown;
-    }
-    bool Button::readSwitch(){
-       return switchVal;
     }
     void Button::start(){
        triggerEvent();
@@ -92,37 +64,26 @@
       eventPressed = false;
 
       while(1){
-	isDown = pullUp? (!pin.digitalRead()) : pin.digitalRead();
+		isDown = pullUp? (!pin.digitalRead()) : pin.digitalRead();
         if(isDown){
             if(!eventPressed){                
                 broadcast(PRESSED);
-		switchVal != switchVal;
                 eventPressed = true;
             }else{
-		heldCount++;
-	    }
+				heldCount++;
+			}
         }else{
-	  heldCount = 0;
-	  if(eventPressed){
-	    broadcast(RELEASED);
-          }
-          eventPressed = false;
-	  pollPressed = false;
+			heldCount = 0;
+			if(eventPressed){
+				broadcast(RELEASED);
+			}
+			eventPressed = false;
         }
-       if(heldCount == 5){
-	 broadcast(HELD);
-       }
-       delay(30);
-      }
-    }
+		if(heldCount == 15){
+			broadcast(HELD);
+		}
+		delay(30);
+	  }
+	}
  
- 
-#define Button_Scope(instance) namespace MICRO_APPEND_ITEMS(instance,_NAMESPACE){\
- bool pressed(){return instance.pressed();}\
-}
-
- 
-//**********************************************************************/
-//*  END COMPONENT EXAMPLES                                            */
-//**********************************************************************/
- 
+#endif
