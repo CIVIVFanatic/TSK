@@ -112,7 +112,7 @@
        if(heldCount == 5){
 	 broadcast(HELD);
        }
-       delay(100);
+       delay(30);
       }
     }
  
