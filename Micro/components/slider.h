@@ -1,14 +1,13 @@
-//authors: Ed Baafi, Robert Hayes
-//(c)2013 Modkit LLC
-//#include <wpp.h>
+//author:Robert Hayes
+//2014 Tech Smart Kids LLC
+//Micro framework provided by Ed Baafi
+//(c) 2013 ModKit LLC
+//Slider component code
+
+#ifndef SLIDER_H
+#define SLIDER_H
+
 #include <micro_component.h>
-//#include "wpp_pins.h"
-//#include "micro_threads.h"
-//***************************************************************************************/                                                                                     */
-//*     Modkit Micro Framework - Light Sensor                                                           */                                                                                     */
-//***************************************************************************************/
-
-
 
 class  Slider: MICRO_Thread {
 public: 
@@ -62,22 +61,11 @@ float Slider::readSlider(){
 }
 
 float Slider::readStep(int steps){
-	return map(currslideVal.percent(),0,100,1,steps+1);
+	return constrain(map(currslideVal.percent(),0,100,1,steps+1),1,steps);
 }
 
 float Slider::readStep(int steps, int min, int max){
-	return map(currslideVal.percent(),min,max,1,steps+1);
+	return constrain(map(currslideVal.percent(),min,max,1,steps+1),1,steps);
 }
 
-
-/* 
- #define Slider_Scope(instance) namespace MICRO_APPEND_ITEMS(instance,_NAMESPACE){\
- bool pressed(){return instance.pressed();}\
- }
- 
- */
-
-
-//**********************************************************************/
-//*  END COMPONENT EXAMPLES                                            */
-//**********************************************************************/
+#endif
