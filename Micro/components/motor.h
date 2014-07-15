@@ -14,6 +14,7 @@ class Motor{
 		void forward(int speed);
 		void reverse(int speed);
 		void drive(int sSpeed);
+		void stop();
 	private:
 		GpioPwmPin FPin;
 		GpioPwmPin RPin;
@@ -50,6 +51,11 @@ void Motor::drive(int sSpeed){
 	}else{
 		reverse(sSpeed);
 	}
+}
+
+void Motor::stop(){
+	FPin.pwmWrite(0);
+	RPin.pwmWrite(0);
 }
 
 #endif
