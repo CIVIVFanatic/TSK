@@ -27,11 +27,15 @@ I5	LITERAL1
 #............#
 Accelerometer	KEYWORD1
 Button	KEYWORD1
+IRDetector	KEYWORD1
+IREmitter	KEYWORD1
 Joystick	KEYWORD1
 Knob	KEYWORD1
 LED	KEYWORD1
 LightSensor	KEYWORD1
+Motor	KEYWORD1
 Slider	KEYWORD1
+SoundDetector	KEYWORD1
 Speaker	KEYWORD1
 
 #*********#
@@ -47,6 +51,12 @@ readZ	KEYWORD2
 pressed	KEYWORD2
 down	KEYWORD2
 readSwitch	KEYWORD2
+
+##IRDetector##
+readIR	KEYWORD2
+
+##IREmitter##
+##all methods highlighed in LED##
 
 ##Joystick##
 ##readX and readY already highlighted##
@@ -65,8 +75,16 @@ state	KEYWORD2
 ##LightSensor##
 readLight	KEYWORD2
 
+##Motor##
+forward	KEYWORD2
+reverse	KEYWORD2
+drive	KEYWORD2
+
 ##Slider##
 readSlider	KEYWORD2
+
+##SoundDetector##
+listen	KEYWORD2
 
 ##Speaker##
 playNote	KEYWORD2
@@ -89,6 +107,9 @@ PRESSED	KEYWORD2
 RELEASED	KEYWORD2
 HELD	KEYWORD2
 
+##IRDetector##
+TURN_ON	KEYWORD2
+
 ##Joystick##
 UP	KEYWORD2
 DOWN	KEYWORD2
@@ -109,3 +130,8 @@ CHANGED	KEYWORD2
 
 ##Slider##
 MOVED	KEYWORD2
+
+##SoundDetector##
+LOUD	KEYWORD2
+QUIET	KEYWORD2
+NOISY	KEYWORD2
