@@ -10,52 +10,37 @@
 
 class Motor{
 	public:
-		Motor(GpioPwmPin P1, GpioPwmPin P2);
-		void forward(int speed);
-		void reverse(int speed);
-		void drive(int sSpeed);
+		Motor(GpioPwmPin P1);
 		void stop();
+		void drive(int speed);
+		void drive();
+		void setSpeed(int speed);
+
 	private:
-		GpioPwmPin FPin;
-		GpioPwmPin RPin;
+		GpioPwmPin Pin;
+		int vel;
 };
 
-Motor::Motor(GpioPwmPin P1, GpioPwmPin P2):FPin(P1),RPin(P2){
-	FPin.setMode(OUTPUT).pwmWrite(0);
-	RPin.setMode(OUTPUT).pwmWrite(0);
-}
-
-void Motor::forward(int speed){
-	if(speed<0){
-		speed = 0;
-	}else if(speed>100){
-		speed = 100;
-	}
-	RPin.pwmWrite(0);
-	FPin.pwmWrite(speed);
-}
-
-void Motor::reverse(int speed){
-	if(speed<0){
-		speed = 0;
-	}else if(speed>100){
-		speed = 100;
-	}
-	FPin.pwmWrite(0);
-	RPin.pwmWrite(speed);
-}
-
-void Motor::drive(int sSpeed){
-	if(sSpeed>=0){
-		forward(sSpeed);
-	}else{
-		reverse(sSpeed);
-	}
+Motor::Motor(GpioPwmPin P1):Pin(P1),vel(100){
+	Pin.setMode(OUTPUT).pwmWrite(0);
 }
 
 void Motor::stop(){
-	FPin.pwmWrite(0);
-	RPin.pwmWrite(0);
+	Pin.pwmWrite(0);
+}
+
+void Motor::drive(int speed){
+	Pin.pwmWrite(speed);
+}
+
+void Motor::drive()
+{
+	drive(vel);
+}
+
+void Motor::setSpeed(int speed)
+{
+	vel = speed;
 }
 
 #endif

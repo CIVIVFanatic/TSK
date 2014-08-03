@@ -76,9 +76,8 @@ state	KEYWORD2
 readLight	KEYWORD2
 
 ##Motor##
-forward	KEYWORD2
-reverse	KEYWORD2
-drive	KEYWORD2
+cc	KEYWORD2
+c	KEYWORD2
 
 ##Slider##
 readSlider	KEYWORD2

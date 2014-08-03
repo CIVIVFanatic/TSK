@@ -44,7 +44,8 @@ void Slider::micro_thread_run(){
 	while(1){
 		
 		Analog prevslideVal = currslideVal;
-		currslideVal = pin.analogRead();
+		Analog tempVal(100 - pin.analogRead().percent());
+		currslideVal = tempVal;
 
 		if(abs(currslideVal.percent() - prevslideVal.percent())>changeThreshold){
 			broadcast(MOVED);

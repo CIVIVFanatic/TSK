@@ -1,14 +1,13 @@
-//authors: Ed Baafi, Robert Hayes
-//(c)2013 Modkit LLC
-//#include <wpp.h>
+//Robert Hayes
+//2014 Tech Smart Kids LLC
+//Micro framework by Ed Baafi
+//2013 ModKit LLC
+//Light Sensor Code
+
+#ifndef LIGHT_SENSOR_H
+#define LIGHT_SENSOR_H
+
 #include <micro_component.h>
-//#include "wpp_pins.h"
-//#include "micro_threads.h"
-//***************************************************************************************/                                                                                     */
-//*     Modkit Micro Framework - Light Sensor                                                           */                                                                                     */
-//***************************************************************************************/
-
-
 
 class  LightSensor: MICRO_Thread {
 public: 
@@ -29,11 +28,10 @@ private:
 	Analog currlightVal;
 	const uint8_t msDelay;
 	const uint8_t changeThreshold;
-	const uint8_t brightThreshold;
 	const boolean brightUp;
 };
 
-LightSensor::LightSensor(AdcPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),msDelay(200),changeThreshold(5),brightUp(false),currlightVal(0),brightThreshold(50.0){
+LightSensor::LightSensor(AdcPin p):MICRO_Thread(MICRO_NEVER_EVENT),pin(p),msDelay(200),changeThreshold(5),brightUp(true),currlightVal(0){
 	start();
 }
 
@@ -54,10 +52,10 @@ void LightSensor::micro_thread_run(){
 		Analog prevlightVal = currlightVal;
 		currlightVal = brightUp? pin.analogRead() : switchVal; //Always read brigthness as high and darkness as low
 
-		if((currlightVal.percent()>brightThreshold)&&(prevlightVal.percent()<brightThreshold)){
+		if((currlightVal.percent()>75)&&(prevlightVal.percent()<75)){
 			broadcast(LIGHT);
 		}
-		if((currlightVal.percent()<brightThreshold)&&(prevlightVal.percent()>brightThreshold)){
+		if((currlightVal.percent()<50)&&(prevlightVal.percent()>50)){
 			broadcast(DARK);
 		}		
 		if(abs(currlightVal.percent() - prevlightVal.percent())>changeThreshold){
@@ -79,18 +77,4 @@ float LightSensor::readLight(){
 	return currlightVal.percent();
 }
 
-
-/* 
- #define LightSensor_Scope(instance) namespace MICRO_APPEND_ITEMS(instance,_NAMESPACE){\
- bool pressed(){return instance.pressed();}\
- }
- 
- */
-
-
-//**********************************************************************/
-//*  END COMPONENT EXAMPLES                                            */
-//**********************************************************************/
-
-
-
+#endif
